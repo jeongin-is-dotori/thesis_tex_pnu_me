@@ -30,6 +30,8 @@
 \LoadClass[11pt,a4paper,onecolumn,oneside]{report}
 % \LoadClass[11pt,a4paper,onecolumn, twoside]{report}
 % \usepackage{showframe}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
 
 \usepackage{tikz}
 \usepackage{chngcntr}
@@ -68,6 +70,10 @@
 	\addcontentsline{toc}{chapter}{Nomenclature}%
 	\if@restonecol\twocolumn\fi
 }
+
+\cftsetindents{section}{1em}{1.5em}
+\cftsetindents{subsection}{2em}{2.5em}
+\cftsetindents{subsubsection}{3em}{3.5em}
 
 \pagenumbering{arabic}
 % \rfoot{Page \thepage \hspace{1pt} of \pageref{LastPage}}
@@ -724,6 +730,30 @@
 \renewcommand{\cftfigaftersnum}{\space}
 \settowidth{\cftfignumwidth}{Figure~1.1.1\quad}
 
+% Ensure bibliography appears in the TOC with a correct hyperlink target
+\renewenvironment{thebibliography}[1]{%
+    \chapter*{\bibname}%
+    \phantomsection
+    \addcontentsline{toc}{chapter}{\bibname}%
+    \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
+    \list{\@biblabel{\@arabic\c@enumiv}}%
+         {\settowidth\labelwidth{\@biblabel{#1}}%
+          \leftmargin\labelwidth
+          \advance\leftmargin\labelsep
+          \@openbib@code
+          \usecounter{enumiv}%
+          \let\p@enumiv\@empty
+          \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+    \sloppy
+    \clubpenalty4000
+    \@clubpenalty \clubpenalty
+    \widowpenalty4000%
+    \sfcode`\.\@m
+}{%
+    \def\@noitemerr{\@latex@warning{Empty `thebibliography' environment}}%
+    \endlist
+}
+
 \renewcommand\tableofcontents{%
     \if@twocolumn
         \@restonecoltrue\onecolumn
@@ -776,9 +806,11 @@
     % \vspace{-1cm}
 	\if@Korean
 		\chapter*{감사의 글}
+		\phantomsection
 		\addcontentsline{toc}{chapter}{감사의 글}
 	\else
 		\chapter*{ACKNOWLEGEMENT}
+		\phantomsection
 		\addcontentsline{toc}{chapter}{Acknowlegement}
 	\fi
     \pagestyle{empty}
