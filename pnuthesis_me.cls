@@ -5,7 +5,6 @@
 \ProvidesClass{pnuthesis_me}[2025/09/11 PNU mechanical systems design document class]
 % edited version of [2021/09/05 PNU PHYS document class]
 % https://github.com/Isaac-Kwon/ThesisLaTeXPNU/tree/master
-
 % \documentclass에 대한 옵션 필드 설정
 % Usage: \documentclass[degree]{class_file_name}
 % degree는 두 가지 선택가능 master, doctor
@@ -28,11 +27,21 @@
 % base class: report class 사용
 % report class에 대한 설명은 latex 관련 book에서 참고가능
 \LoadClass[11pt,a4paper,onecolumn,oneside]{report}
+\RequirePackage[
+  a4paper,
+  left=30mm,
+  right=25mm,
+  top=25mm,
+  bottom=25mm,
+  headheight=0mm,
+  headsep=0mm,
+  footskip=15mm,
+  includefoot,
+]{geometry}
 % \LoadClass[11pt,a4paper,onecolumn, twoside]{report}
 % \usepackage{showframe}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
-
 \usepackage{tikz}
 \usepackage{chngcntr}
 \counterwithin{figure}{section} 
@@ -82,38 +91,43 @@
 \if @Korean
 	\usepackage{tocloft}
 	\usepackage[hangul]{kotex}
+	% \usepackage[d]{kotexutf}
 \else
 	\usepackage{kotex}
+	% \usepackage[c]{kotexutf}
 \fi
-
 
 % \setlength{\paperwidth}  {210mm}
 % \setlength{\paperheight} {297mm}
 
-% 페이지여백 설정
-% 기본적으로 LaTeX의 좌표계는 페이지 왼쪽 위가 아니라 (1in, 1in) 지점에서 본문이 시작됩니다. -> 다시 원점으로
-\addtolength{\hoffset}  {-1 in}
-\addtolength{\voffset}  {-1 in}
+% % 페이지여백 설정
+% % 기본적으로 LaTeX의 좌표계는 페이지 왼쪽 위가 아니라 (1in, 1in) 지점에서 본문이 시작됩니다. -> 다시 원점으로
+% \addtolength{\hoffset}  {-1 in}
+% \addtolength{\voffset}  {-1 in}
 
-\addtolength{\hoffset}  {25 mm}
-\addtolength{\voffset}  {35 mm}
+% \addtolength{\hoffset}  {25 mm}
+% \addtolength{\voffset}  {35 mm}
 
-\setlength{\topmargin}  {0mm}
-\setlength{\headheight} {0mm}
-\setlength{\headsep}    {0mm}
+% \setlength{\topmargin}  {0mm}
+% \setlength{\headheight} {0mm}
+% \setlength{\headsep}    {0mm}
 
-\setlength{\marginparwidth} {10mm}
-\setlength{\marginparsep}   {0mm}
+% \setlength{\marginparwidth} {10mm}
+% \setlength{\marginparsep}   {0mm}
 
-\setlength{\textwidth}      {150mm}
-\setlength{\textheight}     {227mm}
-\setlength{\oddsidemargin}  {5mm}
-\setlength{\footskip}       {17.5mm}
+% \setlength{\textwidth}      {150mm}
+% \setlength{\textheight}     {227mm}
+% \setlength{\oddsidemargin}  {5mm}
+% \setlength{\footskip}       {17.5mm}
 
-\if@Korean
-	\setlength{\textheight} {227mm}
-	\setlength{\footskip}   {17.5mm}
-\fi
+% \if@Korean
+% 	\setlength{\textheight} {227mm}
+% 	\setlength{\footskip}   {17.5mm}
+% \fi
+
+% 여백 설정을 geometry 패키지 사용하는 것으로 변경
+
+
 
 % \title 명령어 재설정
 % 한글, 영어 두 종류의 타이틀을 모두 넣는다.
@@ -292,195 +306,155 @@
 }
 
 % 외표지 작성
-\newcommand{\makecover}{%
-            \thispagestyle{empty}
-            %\changetext{}{10mm}{-5mm}{}{}
-%           \noindent
-            \begin{center}
-				\vspace*{0.5cm}
-				% \vspace*{2pt}
-                % \Large
-				\fontsize{16pt}{16pt}
-				\selectfont
-				\if@Korean
-					\if@Doctor
-						박 사 학 위 논 문 \\
-					\else
-						석 사 학 위 논 문 \\
-					\fi
-				\else
-					\if@Doctor
-						Dissertation for the degree of Doctor of Philosophy  \\
-					\else
-						Thesis for the degree of Master of Science\\
-					\fi
-				\fi
-                \vspace*{2cm}
-				\vspace*{-12pt}
-				{ 
-					% \begin{spacing}{1.0}
-					\setstretch{1.3}
-					\fontsize {22pt}{24pt}
-					\selectfont
-					\if@Korean
-						\@KorTitle\ \\
-					\else
-						\@EngTitle\ \\
-					\fi
-					% \end{spacing}
-				}
+\newcommand{\makecover}{
+	\clearpage
+  	\newgeometry{left=25mm,right=25mm,top=4.5cm,bottom=4cm,headheight=0mm,headsep=0mm,footskip=0mm}
+  	\thispagestyle{empty}
 
+  	\begin{center}
+		\fontsize{16pt}{16pt}\selectfont
+		\if@Korean
+		\if@Doctor 박 사 학 위 논 문\\ \else 석 사 학 위 논 문\\ \fi
+		\else
+		\if@Doctor Dissertation for the degree of Doctor of Philosophy\\
+		\else Thesis for the degree of Master of Science\\ \fi
+		\fi
 
-            \vfill
-            \end{center}
-                \begin{minipage}[t][60mm][b]{\textwidth} % 바닥 기준 정렬 시작
-                    \begin{center}
-                    \fontsize{16pt}{18pt}
-					\selectfont
-					\if@Korean
-					\@KorAuthor
-					\else
-					\@EngAuthor
-					\fi
-					\\
-					\vspace*{2cm}
-					\if@Korean
-						{
-							\fontsize {16pt}{18pt}
-							\selectfont
-							부산대학교 대학원\\
-						}
-						\vspace*{0.5cm}
-						% \vspace*{-0.18cm}
-						{
-							\fontsize {16pt}{18pt}
-							\selectfont
-							기계공학부 \\
-						}
-					\else
-						School of Mechanical Engineering \\
-						The Graduate School \\
-						Pusan National University \\
-					\fi
-					\vspace*{2cm}
-					\fontsize{16pt}{0pt}
-					\selectfont
-					\if@Korean
-						\textbf{\@GradYearKor} \\
-					\else
-						\textbf{\@GradYearEng} \\
-					\fi
-					\vspace*{1.0cm}
-                    \end{center}
-                \end{minipage}
-            \newpage
-            }
+		\vspace*{2cm}
+		
+		{\setstretch{1.3}\fontsize{22pt}{24pt}\selectfont
+		\if@Korean \@KorTitle\\ \else \@EngTitle\\ \fi
+		}
 
-\newcommand{\makeapproval}{%
-            \thispagestyle{empty}
-            \begin{center}
-				\vspace*{0.00cm}
-				\setstretch{1.3}
-                % 타이틀 시작
-				\fontsize{22pt}{24pt}
-				\selectfont
-				\if@Korean
-					\@KorTitle\ \\
-				\else
-					\@EngTitle\ \\
-				\fi
-                \vspace*{1.5cm}
-				% \vspace*{-8pt}
-				
-				\if@Korean % 1차 본문 시작 (한국어)
-					\fontsize {16pt}{16pt}
-					\selectfont
-					\if@Doctor
-						이 논문을 공학박사 학위논문으로 제출함\\
-					\else
-						이 논문을 공학석사 학위논문으로 제출함\\
-					\fi
-					\vspace*{1.0cm}
-					\fontsize {14pt}{16pt}
-					\selectfont
-					\@KorAuthor \\ 
-					\vspace*{1.0cm}
-					부산대학교 대학원 \\ 
-					\vspace*{0.5cm}
-					기계공학부 \\
-					\vspace*{1.0cm}
-					지 도 교 수 \quad{} ~\@KorAdviser \\
-				\else % 1차 본문 시작 (영어)
-					\setstretch{1.3}
-					\fontsize {14pt}{16pt}
-					\selectfont
-					\if@Doctor
-					A Dissertation submitted to the graduate school of Pusan National University in partial fulfillment of the requirements for the degree of Doctor of Philosophy in Physics \\ under the direction of \textbf{\@EngAdviser}
-					\else
-					A Thesis submitted to the graduate school of Pusan National University in partial fulfillment of the requirements for the degree of Master of Physics \\ under the direction of \textbf{\@EngAdviser}
-					\fi
-				\fi
+	\end{center}
+	\vfill
+	\begin{center}
+		{\fontsize{16pt}{18pt}\selectfont
+		\if@Korean \@KorAuthor \\ \else \@EngAuthor \\ \fi
+		}
+		\vspace*{2cm}
+		{\fontsize{16pt}{18pt}\selectfont
+		\if@Korean
+			부산대학교 대학원\\[0.5cm]
+			기계공학부\\
+		\else
+			The Graduate School\\[0.5cm]
+			School of Mechanical Engineering\\
+			Pusan National University\\
+		\fi
+		\vspace*{2cm}
+		}
+		{\fontsize{16pt}{0pt}\selectfont
+		\if@Korean \textbf{\@GradYearKor}\\ \else \textbf{\@GradYearEng}\\ \fi
+		}
+	\end{center}
 
+	\restoregeometry
+	\clearpage
+}
 
-            \vfill
-            \end{center}
-                \begin{minipage}[t][60mm][b]{\textwidth} % 바닥 기준 정렬 시작
-                    \begin{center}
-						\if@Korean % 2차 본문 시작 (한국어)
-						\fontsize {16pt}{18pt}
-						\selectfont
-						\if@Doctor
-							\@AuthorNS의 공학박사 학위논문을 인준함\\
-						\else
-							\@AuthorNS의 공학석사 학위논문을 인준함\\
-						\fi
-						\vspace*{1.0cm}
-						\fontsize {14pt}{16pt}
-						\selectfont
-						\textbf{\@KorExamYear}\ \\
-						\vspace*{1.0cm}
-						\vspace*{-8pt}
-						\setstretch{2.0}
-						\fontsize {14pt}{16pt}
-						\selectfont
-						% 심사위원 서명란
-						\selectfont
-						위~~원~~장\ \rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@KorChair}\rule{1.5cm}{0pt} \ 인\\
-						위~~~~~~~~원\ \rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@KorMemA}\rule{1.5cm}{0pt} \ 인\\
-						위~~~~~~~~원\ \rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@KorMemB}\rule{1.5cm}{0pt} \ 인\\
-						\if@Doctor
-						위~~~~~~~~원\ \rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@KorMemC}\rule{1.5cm}{0pt} \ 인\\
-						위~~~~~~~~원\ \rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@KorMemD}\rule{1.5cm}{0pt} \ 인\\
-						\fi
-						\else % 2차 본문 시작 (영어)
-						\fontsize {14pt}{16pt}
-						\selectfont
-						\if@Doctor
-						The dissertation for the degree of Doctor of Philosophy by \@EngAuthor\ \\has been approved  by the committee members. \\
-						\else
-						The thesis for the degree of Master of Science by \@EngAuthor\ \\has been approved by the committee members. \\
-						\fi
-						\vspace*{1.0cm}
-						\textbf{\@EngExamYear}\ \\
-						\vspace*{1.0cm}
-						\vspace*{-20pt}
-						\setstretch{2.0}
-						\fontsize {14pt}{16pt}
-						\selectfont
-						Chair~~~\rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@EngChair}\\
-						Member~~\PNU@NameOrBlank{\PNU@EngMemA}\\
-						Member~~\PNU@NameOrBlank{\PNU@EngMemB}\\
-						\if@Doctor
-						Member~~\PNU@NameOrBlank{\PNU@EngMemC}\\
-						Member~~\PNU@NameOrBlank{\PNU@EngMemD}\\
-						\fi
-						\fi
-                    \end{center}
-					\vspace*{0.5cm}
-					% \vspace*{3pt}
-                \end{minipage}
-            \newpage
-            }
+\newcommand{\makeapproval}{
+	\clearpage
+	\newgeometry{top=4.5cm,bottom=4cm,left=25mm,right=25mm,headheight=0mm,headsep=0mm,footskip=0mm}%
+	\thispagestyle{empty}
+
+	\begin{center}
+	% 제목
+	\setstretch{1.3}
+	\fontsize{22pt}{24pt}\selectfont
+	\if@Korean
+		\@KorTitle\\
+	\else
+		\@EngTitle\\
+	\fi
+
+	\vspace*{1.5cm}
+
+	% --- 본문 (제출 문구)
+	\if@Korean
+		\fontsize{16pt}{18pt}\selectfont
+		\if@Doctor
+		이 논문을 공학박사 학위논문으로 제출함\\
+		\else
+		이 논문을 공학석사 학위논문으로 제출함\\
+		\fi
+
+		\vspace*{1cm}
+		\fontsize{14pt}{16pt}\selectfont
+		\@KorAuthor\\
+
+		\vspace*{1cm}
+		부산대학교 대학원\\
+		\vspace*{0.5cm}
+		기계공학부\\
+		\vspace*{1cm}
+		지도교수\quad{}\@KorAdviser\\
+
+	\else
+		\fontsize{14pt}{16pt}\selectfont
+		\setstretch{1.3}
+		\if@Doctor
+		A Dissertation submitted to the Graduate School of Pusan National University in partial fulfillment of the requirements for the degree of Doctor of Philosophy in Mechanical Engineering\\
+		under the direction of \textbf{\@EngAdviser}\\
+		\else
+		A Thesis submitted to the Graduate School of Pusan National University in partial fulfillment of the requirements for the degree of Master of Science in Mechanical Engineering\\
+		under the direction of \textbf{\@EngAdviser}\\
+		\fi
+	\fi
+	\end{center}
+
+	\vfill
+
+	% --- 하단부 (심사위원란)
+	\begin{center}
+	\fontsize{16pt}{18pt}\selectfont
+	\if@Korean
+		\if@Doctor
+		\@AuthorNS 의 공학박사 학위논문을 인준함\\
+		\else
+		\@AuthorNS 의 공학석사 학위논문을 인준함\\
+		\fi
+
+		\vspace*{1cm}
+		\fontsize{14pt}{16pt}\selectfont
+		\textbf{\@KorExamYear}\\
+
+		\vspace*{1cm}
+		\setstretch{2.0}
+		\fontsize{14pt}{16pt}\selectfont
+		위~~원~~장\ \rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@KorChair}\rule{1.5cm}{0pt} 인\\
+		위~~~~~~~~원\ \rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@KorMemA}\rule{1.5cm}{0pt} 인\\
+		위~~~~~~~~원\ \rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@KorMemB}\rule{1.5cm}{0pt} 인\\
+		\if@Doctor
+		위~~~~~~~~원\ \rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@KorMemC}\rule{1.5cm}{0pt} 인\\
+		위~~~~~~~~원\ \rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@KorMemD}\rule{1.5cm}{0pt} 인\\
+		\fi
+	\else
+		\fontsize{14pt}{16pt}\selectfont
+		\if@Doctor
+		The dissertation for the degree of Doctor of Philosophy by \@EngAuthor\ has been approved by the committee members.\\
+		\else
+		The thesis for the degree of Master of Science by \@EngAuthor\ has been approved by the committee members.\\
+		\fi
+
+		\vspace*{1cm}
+		\textbf{\@EngExamYear}\\
+
+		\vspace*{1cm}
+		\setstretch{2.0}
+		Chair~~~\rule{3cm}{0pt}\PNU@NameOrBlank{\PNU@EngChair}\\
+		Member~~\PNU@NameOrBlank{\PNU@EngMemA}\\
+		Member~~\PNU@NameOrBlank{\PNU@EngMemB}\\
+		\if@Doctor
+		Member~~\PNU@NameOrBlank{\PNU@EngMemC}\\
+		Member~~\PNU@NameOrBlank{\PNU@EngMemD}\\
+		\fi
+	\fi
+	\end{center}
+
+	\restoregeometry
+	\clearpage
+}
 
 %chapter 설정
 \renewcommand\chapter{%
@@ -558,62 +532,33 @@
 %% Abstract
 \newcounter{pagemarker}
 \newcommand{\@lastPage}{\pageref{paperlastpagelabel}}
-
-% \renewenvironment{abstract}{%
-%     \pagenumbering{roman}
-%     \pagestyle{plain}%
-%     \newcommand{\@tempbreak}{}
-%     \let\@tempbreak\linebreak
-%     \renewcommand{\linebreak}{\ }
-%     \newlength{\@thesisinfowidth}
-%     \setlength{\@thesisinfowidth}{\textwidth}
-%     \addtolength{\@thesisinfowidth}{-20mm}
-%     %\noindent
-%     \begin{center}
-%     \fontsize {22pt}{22pt}
-%     \selectfont
-%     \textbf{\abstractname} \\
-%     \end{center}
-%     \vspace{20\p@}
-%     \addcontentsline{toc}{chapter}{\abstractname}
-% }{  \setcounter{pagemarker}{\value{page}}
-%     \addtocounter{pagemarker}{1}
-%     \newpage \pagenumbering{arabic}
-%     \let\linebreak\@tempbreak
-% }
-
-\newenvironment{abstractKOR}{%
-    % \pagenumbering{roman}
+\newenvironment{abstractKOR}{
+	\newgeometry{left=30mm,right=25mm,top=35mm,bottom=25mm,headheight=0mm,headsep=0mm,footskip=0mm}
 	\begin{center}
 	\setstretch{1.3}	
-    \pagestyle{plain}%
-	% \vspace*{1.0cm}
+	\pagestyle{plain}
 	\fontsize{14pt}{14pt}
 	\selectfont
 	\@KorTitle\ \\
 	\vspace*{1.5cm}
-	% \vspace*{-6pt}
 	\fontsize{12pt}{12pt}
 	\selectfont
-	% \textbf{\@KorAuthor\ } \\
 	\@KorAuthor\ \\
 	\vspace*{1.0cm}
-	% \vspace*{-5.5pt}
 	\fontsize{11pt}{11pt}
 	\selectfont
 	부산대학교 대학원 기계공학부\\
 	\vspace*{1.5cm}
-	% \vspace*{-6pt}
 	\fontsize{12pt}{12pt}
 	\selectfont
 	요약\\
 	\vspace*{0.5cm}
-	% \vspace*{-0.0cm}
 	\fontsize{11pt}{13pt}
 	\selectfont
 	\end{center}
 	\begin{justify}
-}{  %\setcounter{pagemarker}{\value{page}}
+		}
+		{  %\setcounter{pagemarker}{\value{page}}
     % \addtocounter{pagemarker}{1}
 	\end{justify}
     \newpage 
@@ -621,7 +566,8 @@
     \let\linebreak\@tempbreak
 }
 
-\newenvironment{abstractENG}{%
+\newenvironment{abstractENG}{
+  	\newgeometry{left=30mm,right=25mm,top=35mm,bottom=25mm,headheight=0mm,headsep=0mm,footskip=0mm}
     % \pagenumbering{roman}
 	\begin{center}
 	\setstretch{1.3}
